@@ -1,4 +1,4 @@
-# PayXpert NodeJS Library
+# PayXpert NodeJS Library (Typescript Edition)
 
 The PayXpert NodeJS library provides convenient access to the Payxpert 
 Payment Gateway and Connect2Pay API from applications written in server-side
@@ -18,7 +18,7 @@ See the [PayXpert API documentation](https://developers.payxpert.com).
 
 Install the package with:
 
-    npm i payxpert --save
+    npm i payxpert_ts --save
 
 ## Usage
 
@@ -40,3 +40,7 @@ $ export PXP_ORIGINATOR_PASSWORD=...
 $ npm install
 $ npm test
 ```
+
+## Modifications
+- Typescript source files instead of Javascript
+- Modernized ES2016 output

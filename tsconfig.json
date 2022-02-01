@@ -1,0 +1,9 @@
+{
+    "include": ["src/**/*"],
+    "compilerOptions": {
+        "target": "ES2016",
+        "declaration": true,
+        "outDir": "dist",
+        "declarationMap": true
+    }
+}

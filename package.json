@@ -2,7 +2,7 @@
   "name": "payxpert",
   "version": "1.0.4",
   "description": "PayXpert API wrapper in NodeJS",
-  "main": "lib/sdk.js",
+  "main": "dist/index.ts",
   "scripts": {
     "test": "mocha"
   },
@@ -22,5 +22,8 @@
   "license": "Apache-2.0",
   "devDependencies": {
     "mocha": "^6.2.0"
+  },
+  "dependencies": {
+    "@types/node": "^17.0.14"
   }
 }
