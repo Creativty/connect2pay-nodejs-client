@@ -1,5 +1,5 @@
-import Connect2PayClient from "./connect2pay";
-import GatewayClient from "./gateway";
+import Connect2PayClient from "./connect2pay.js";
+import GatewayClient from "./gateway.js";
 export default class PaymentSDK {
     constructor(id, password) {
         this.setOriginatorID(id);

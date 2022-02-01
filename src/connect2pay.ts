@@ -1,5 +1,5 @@
-import { config } from './payment_config';
-import PaymentClient from "./payment_client";
+import { config } from './payment_config.js';
+import PaymentClient from "./payment_client.js";
 import { createDecipheriv } from 'crypto';
 
 function setApiVersion(body:any) {

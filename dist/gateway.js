@@ -7,8 +7,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { config } from './payment_config';
-import PaymentClient from "./payment_client";
+import { config } from './payment_config.js';
+import PaymentClient from "./payment_client.js";
 export default class GatewayClient extends PaymentClient {
     // region Transaction Operations
     creditCardSale(body) {
