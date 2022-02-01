@@ -1,7 +1,7 @@
 {
-  "name": "payxpert",
-  "version": "1.0.4",
-  "description": "PayXpert API wrapper in NodeJS",
+  "name": "payxpert_ts",
+  "version": "1.0.5",
+  "description": "PayXpert API wrapper in NodeJS (Typescript Edition)",
   "main": "dist/index.ts",
   "scripts": {
     "test": "mocha"
@@ -17,7 +17,8 @@
   "homepage": "https://github.com/PayXpert/connect2pay-nodejs-client",
   "author": "PayXpert Technical Team <technical@payxpert.com> (https://developers.payxpert.com)",
   "contributors": [
-    "Andrey Sapunov <andrey.sapunov@payxpert.com>"
+    "Andrey Sapunov <andrey.sapunov@payxpert.com>",
+    "Abderrahim Indjaren <rahimos.123@gmail.com>"
   ],
   "license": "Apache-2.0",
   "devDependencies": {
