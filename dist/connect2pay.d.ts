@@ -1,4 +1,4 @@
-import PaymentClient from "./payment_client";
+import PaymentClient from "./payment_client.js";
 export default class Connect2PayClient extends PaymentClient {
     createPayment(body: any): Promise<any>;
     consultPaymentStatus(token: string): Promise<any>;

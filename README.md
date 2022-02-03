@@ -1,18 +1,18 @@
-# PayXpert NodeJS Library (Typescript Edition)
+# PayZone NodeJS Library (Typescript Edition)
 
-The PayXpert NodeJS library provides convenient access to the Payxpert 
+The PayZone NodeJS library provides convenient access to the Payxpert 
 Payment Gateway and Connect2Pay API from applications written in server-side
 JavaScript.
 
 Please keep in mind that this package is for use with server-side Node that
-uses PayXpert API credentials (originator ID and password). To maintain PCI 
+uses PayZone API credentials (originator ID and password). To maintain PCI 
 compliance, tokenization of credit
 card information should always be done with relevant software on the
 client side. This package should not be used for that purpose.
 
 ## Documentation
 
-See the [PayXpert API documentation](https://developers.payxpert.com).
+See the PayZone API documentation](https://developers.payzone.ma).
 
 ## Installation
 
@@ -44,3 +44,4 @@ $ npm test
 ## Modifications
 - Typescript source files instead of Javascript
 - Modernized ES2016 output
+- PAYZONE only

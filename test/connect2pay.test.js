@@ -1,30 +1,29 @@
-const assert = require('assert');
-const mocha = require('mocha');
-const describe = mocha.describe;
+import { notEqual, ok, equal } from 'assert';
+import { describe } from 'mocha';
 
-const PaymentSDK = require('../lib/sdk');
+import PaymentSDK from '../dist/sdk.js';
 
-const testData = require('../testUtils/testData');
-const originatorId = testData.getOriginatorId();
-const originatorPassword = testData.getOriginatorPassword();
+import _pkgTestData from '../testUtils/testData.cjs';
+const { getOriginatorId, getOriginatorPassword, getTransactionId} = _pkgTestData;
+
+const originatorId = getOriginatorId();
+const originatorPassword = getOriginatorPassword();
 
 it('checking originator credentials', (done) => {
-    assert.notEqual(originatorId, "", "Originator ID not set");
-    assert.notEqual(originatorPassword, "", "Originator password not set");
+    notEqual(originatorId, "", "Originator ID not set");
+    notEqual(originatorPassword, "", "Originator password not set");
 
     done();
 });
 
-const connect2pay = PaymentSDK(originatorId, originatorPassword).connect2pay;
+/*
+const connect2pay = new PaymentSDK(originatorId, originatorPassword).connect2pay;
 
 describe('Account information', () => {
     it('Account information request', async () => {
         let response = await connect2pay.accountInformation();
-        assert.ok(response.apiVersion);
-
-        return new Promise(resolve => {
-            resolve();
-        })
+        ok(response.apiVersion, "Error matching apiVersion");
+        return;
     });
 });
 
@@ -46,7 +45,7 @@ describe('Payment operations', function () {
 
     it('create payment', async () => {
         responseCreatePayment = await connect2pay.createPayment(body);
-        assert.equal(responseCreatePayment.code, "200");
+        equal(responseCreatePayment.code, "200");
 
         return new Promise(resolve => {
             resolve();
@@ -55,58 +54,12 @@ describe('Payment operations', function () {
 
     it('consult payment status', async () => {
         let responseConsultPayment = await connect2pay.consultPaymentStatus(responseCreatePayment.merchantToken);
-        assert.ok(responseConsultPayment.errorCode);
+        ok(responseConsultPayment.errorCode);
 
         return new Promise(resolve => {
             resolve();
         })
     });
-
-    it('alipay direct payment call', async () => {
-        let response = await connect2pay.createAliPayDirectPayment(responseCreatePayment.customerToken, {mode: "pos"});
-        assert.equal(response.code, "200");
-
-        return new Promise(resolve => {
-            resolve();
-        })
-    });
-
-});
-
-describe('WeChat direct payment', function () {
-    this.timeout(5500);
-
-    const amountForTest = 1000;
-
-    const body = {
-        "shippingType": "physical",
-        "paymentMethod": "wechat",
-        "paymentMode": "single",
-        "amount": amountForTest,
-        "currency": "EUR",
-        "orderID": "NODEJS TEST"
-    };
-
-    let responseCreatePayment = null;
-
-    it('create payment', async () => {
-        responseCreatePayment = await connect2pay.createPayment(body);
-        assert.equal(responseCreatePayment.code, "200");
-
-        return new Promise(resolve => {
-            resolve();
-        })
-    });
-
-    it('wechat direct payment call', async () => {
-        let response = await connect2pay.createWeChatDirectPayment(responseCreatePayment.customerToken, {mode: "native"});
-        assert.equal(response.code, "200");
-
-        return new Promise(resolve => {
-            resolve();
-        })
-    });
-
 });
 
 
@@ -118,11 +71,11 @@ describe('Encryption', () => {
 
         let result = connect2pay.handleRedirectStatus(encryptedData, merchantToken);
 
-        assert.ok(result);
+        ok(result);
 
-        assert.equal(merchantToken, result.merchantToken);
-        assert.equal("000", result.errorCode);
-        assert.equal("Not processed", result.status);
+        equal(merchantToken, result.merchantToken);
+        equal("000", result.errorCode);
+        equal("Not processed", result.status);
     });
 
 });
@@ -140,7 +93,7 @@ describe('Prepare payment', () => {
 
     it('create authorization', async () => {
         let responseCreatePayment = await connect2pay.createPayment(body);
-        assert.equal(responseCreatePayment.code, "200");
+        equal(responseCreatePayment.code, "200");
 
         console.log("Payment created. Link to payment: " + responseCreatePayment.customerRedirectURL);
         console.log("After transaction will be done you can execute export PXP_TRANSACTION_ID=.... and perform capture test");
@@ -151,9 +104,9 @@ describe('Prepare payment', () => {
     });
 
     it('performing capture', async () => {
-        if (testData.getTransactionId() !== "") {
-            let responseCapture = await connect2pay.captureTransaction(testData.getTransactionId(), 4000);
-            assert.equal(responseCapture.code, "000");
+        if (getTransactionId() !== "") {
+            let responseCapture = await connect2pay.captureTransaction(getTransactionId(), 4000);
+            equal(responseCapture.code, "000");
         }
 
         return new Promise(resolve => {
@@ -173,7 +126,7 @@ describe("Export transactions", () => {
         };
 
         let exportResponse = await connect2pay.exportTransactionsList(requestBody);
-        assert.equal(Array.isArray(exportResponse.transactions), true);
+        equal(Array.isArray(exportResponse.transactions), true);
 
         return new Promise(resolve => {
             resolve();
@@ -181,3 +134,4 @@ describe("Export transactions", () => {
     });
 
 });
+*/

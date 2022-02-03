@@ -17,7 +17,7 @@ export default class PaymentSDK {
         if (this._connect2Pay == null) {
             this._connect2Pay = new Connect2PayClient(this.originatorID, this.originatorPW);
         }
-        return this.connect2pay;
+        return this._connect2Pay;
     }
     setOriginatorID(id) {
         if (id) {
@@ -28,7 +28,7 @@ export default class PaymentSDK {
     setOriginatorPW(password) {
         if (password) {
             this.paymentGateway = null;
-            this.originatorPW = null;
+            this.originatorPW = password;
         }
     }
 }

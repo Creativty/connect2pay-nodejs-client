@@ -9,16 +9,21 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import { config } from './payment_config.js';
 import PaymentClient from "./payment_client.js";
+function setApiVersion(body) {
+    if (typeof body.apiVersion !== "undefined" || !body.apiVersion) {
+        body.apiVersion = "002.60";
+    }
+}
 export default class GatewayClient extends PaymentClient {
     // region Transaction Operations
     creditCardSale(body) {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield this.makeRequest(config.GATEWAY_HOST, "transactions/sale/creditcard", "POST", body);
+            return yield this.makeRequest(config.GATEWAY_HOST, "/transaction/sale/creditcard", "POST", body);
         });
     }
     creditCardAuthorize(body) {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield this.makeRequest(config.GATEWAY_HOST, "transactions/authorize/creditcard", "POST", body);
+            return yield this.makeRequest(config.GATEWAY_HOST, "/transaction/authorize/creditcard", "POST", body);
         });
     }
     creditCardCapture(id, body) {
@@ -27,15 +32,15 @@ export default class GatewayClient extends PaymentClient {
             return yield this.makeRequest(config.GATEWAY_HOST, url, "POST", body);
         });
     }
-    refundTransaction(id, body) {
+    creditFundTransfer(id, body) {
         return __awaiter(this, void 0, void 0, function* () {
             const url = `/transaction/${id}/refund`;
             return yield this.makeRequest(config.GATEWAY_HOST, url, "POST", body);
         });
     }
-    creditFundtransfer(id, body) {
+    refundTransaction(id, body) {
         return __awaiter(this, void 0, void 0, function* () {
-            const url = `/transaction/${id}/credit`;
+            const url = `/transaction/${id}/refund`;
             return yield this.makeRequest(config.GATEWAY_HOST, url, "POST", body);
         });
     }
@@ -51,7 +56,7 @@ export default class GatewayClient extends PaymentClient {
             return yield this.makeRequest(config.GATEWAY_HOST, url, "POST", body);
         });
     }
-    queryTransaction(id, body) {
+    queryTransaction(id) {
         return __awaiter(this, void 0, void 0, function* () {
             const url = `/transaction/${id}`;
             return yield this.makeRequest(config.GATEWAY_HOST, url, "GET");
@@ -68,7 +73,7 @@ export default class GatewayClient extends PaymentClient {
     }
     blacklistUsers(id, body) {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield this.makeRequest(config.GATEWAY_HOST, `transaction/${id}/blacklist`, "POST", body);
+            return yield this.makeRequest(config.GATEWAY_HOST, `/transaction/${id}/blacklist`, "POST", body);
         });
     }
     // region Subscriptions Operations.
@@ -76,7 +81,7 @@ export default class GatewayClient extends PaymentClient {
     // region  3D Secure
     check3DSecure(body) {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield this.makeRequest(config.GATEWAY_HOST, "transaction/3dscheck/creditcard", "POST", body);
+            return yield this.makeRequest(config.GATEWAY_HOST, "/transaction/3dscheck/creditcard", "POST", body);
         });
     }
     parse3DSecure(id, paRes) {

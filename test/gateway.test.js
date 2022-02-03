@@ -1,30 +1,37 @@
-const assert = require('assert');
-const mocha = require('mocha');
-const describe = mocha.describe;
+import { notEqual, equal } from 'assert';
+import { describe as _describe } from 'mocha';
+const describe = _describe;
 
-const PaymentSDK = require('../lib/sdk');
+//"mocha": "^6.2.0",
 
-const testData = require('../testUtils/testData');
-const originatorId = testData.getOriginatorId();
-const originatorPassword = testData.getOriginatorPassword();
+import PaymentSDK from '../dist/sdk.js';
+
+import _pkgTestData from '../testUtils/testData.cjs';
+const { getOriginatorId, getOriginatorPassword } = _pkgTestData;
+
+const originatorId = getOriginatorId();
+const originatorPassword = getOriginatorPassword();
 
 it('checking originator credentials', (done) => {
-    assert.notEqual(originatorId, "", "Originator ID not set");
-    assert.notEqual(originatorPassword, "", "Originator password not set");
+    notEqual(originatorId, "", "Originator ID not set");
+    notEqual(originatorPassword, "", "Originator password not set");
 
     done();
 });
 
-const gateway = PaymentSDK(originatorId, originatorPassword).gateway;
+const gateway = new PaymentSDK(originatorId, originatorPassword).gateway;
 
-describe("credit card operations", () => {
+describe("credit card operations", function () {
 
+    this.timeout(5000);
     const amountForTest = 1000;
+
+    console.log("Originator:", getOriginatorId(), ",", getOriginatorPassword());
 
     const body = {
         customerIP: "1.2.3.4",
         amount: amountForTest,
-        currency: "EUR",
+        currency: "MAD",
         orderID: "HELLO NODEJS",
 
         cardNumber: "4111111111111111",
@@ -47,86 +54,82 @@ describe("credit card operations", () => {
 
     it('credit card: sale', async () => {
         responseSale = await gateway.creditCardSale(body);
-        assert.equal(responseSale.errorCode, "000");
-
-        return new Promise(resolve => {
-            resolve();
-        })
+        equal(responseSale.errorCode, "000");
+        return;
     });
-
     it('query transaction status', async () => {
         let responseQuery = await gateway.queryTransaction(responseSale.transactionID);
-        assert.equal(responseQuery.errorCode, "000");
-
+        equal(responseQuery.errorCode, "000");
+        
         return new Promise(resolve => {
             resolve();
         })
     });
-
+    
     it('transaction refund', async () => {
         let refundBody = {
             transactionID: responseSale.transactionID,
             amount: amountForTest
         };
-
+        
         let responseRefund = await gateway.refundTransaction(responseSale.transactionID, refundBody);
-        assert.equal(responseRefund.errorCode, "000");
-
+        equal(responseRefund.errorCode, "000");
+        
         return new Promise(resolve => {
             resolve();
         })
     });
-
+    
     it('transaction rebill', async () => {
         // We will rebill a half amount of initial transaction
-
+        
         let rebillBody = {
             transactionID: responseSale.transactionID,
             amount: amountForTest / 2
         };
-
+        
         let responseRebill = await gateway.rebillTransaction(responseSale.transactionID, rebillBody);
-        assert.equal(responseRebill.errorCode, "000");
-
+        equal(responseRebill.errorCode, "000");
+        
         return new Promise(resolve => {
             resolve();
         })
     });
-
+    
     let responseAuth = null;
-
+    
     it('test authorize: for capture', async () => {
-        responseAuth = await gateway.creditCardAuthorize(body);
-        assert.equal(responseAuth.errorCode, "000");
-
+            responseAuth = await gateway.creditCardAuthorize(body);
+        equal(responseAuth.errorCode, "000");
+        
         return new Promise(resolve => {
             resolve();
         })
     });
-
+    
     it('test capture', async () => {
         let captureBody = {
             transactionID: responseAuth.transactionID,
             amount: amountForTest / 2
         };
-
+        
         let responseCapture = await gateway.creditCardCapture(responseAuth.transactionID, captureBody);
-        assert.equal(responseCapture.errorCode, "000");
-
+        equal(responseCapture.errorCode, "000");
+        
         return new Promise(resolve => {
             resolve();
         })
     });
-
+    
     it('test authorize: for cancel', async () => {
         responseAuth = await gateway.creditCardAuthorize(body);
-        assert.equal(responseAuth.errorCode, "000");
-
+        equal(responseAuth.errorCode, "000");
+        
         return new Promise(resolve => {
             resolve();
         })
     });
-
+    
     it('test cancel', async () => {
         let cancelBody = {
             transactionID: responseAuth.transactionID,
@@ -134,29 +137,27 @@ describe("credit card operations", () => {
         };
 
         let responseCancel = await gateway.cancelTransaction(responseAuth.transactionID, cancelBody);
-        assert.equal(responseCancel.errorCode, "000");
+        equal(responseCancel.errorCode, "000");
 
         return new Promise(resolve => {
             resolve();
         })
     });
-
+    
     it('test credit funds transfer', async () => {
         let cftBody = {
             transactionID: responseSale.transactionID,
             amount: amountForTest / 2
         };
-
+        
         let responseCFT = await gateway.creditFundTransfer(responseSale.transactionID, cftBody);
-        assert.equal(responseCFT.errorCode, "000");
+        equal(responseCFT.errorCode, "000");
 
         return new Promise(resolve => {
             resolve();
         })
     });
-
 });
-
 describe("export transactions", () => {
 
     it('test export transactions', async () => {
@@ -168,7 +169,7 @@ describe("export transactions", () => {
         };
 
         let exportResponse = await gateway.exportTransactionsList(requestBody);
-        assert.equal(exportResponse.errorCode, "000");
+        equal(exportResponse.errorCode, "000");
 
         return new Promise(resolve => {
             resolve();
@@ -176,7 +177,7 @@ describe("export transactions", () => {
     });
 
 });
-
+/*
 describe("Subscription operations", () => {
 
     const amountForTest = 1000;
@@ -215,7 +216,7 @@ describe("Subscription operations", () => {
 
     it('subscription operations: credit card: sale', async () => {
         responseSale = await gateway.creditCardSale(body);
-        assert.equal(responseSale.errorCode, "000");
+        equal(responseSale.errorCode, "000");
 
         return new Promise(resolve => {
             resolve();
@@ -224,7 +225,7 @@ describe("Subscription operations", () => {
 
     it('instant conversion', async () => {
         let responseInstantConversion = await gateway.instantConversion(responseSale.subscriptionID);
-        assert.equal(responseInstantConversion.errorCode, "000");
+        equal(responseInstantConversion.errorCode, "000");
 
         return new Promise(resolve => {
             resolve();
@@ -233,7 +234,7 @@ describe("Subscription operations", () => {
 
     it('query subscription', async () => {
         let responseQuerySubscription = await gateway.querySubscription(responseSale.subscriptionID);
-        assert.equal(responseQuerySubscription.errorCode, "000");
+        equal(responseQuerySubscription.errorCode, "000");
 
         return new Promise(resolve => {
             resolve();
@@ -249,7 +250,7 @@ describe("Subscription operations", () => {
         };
 
         let responseExportSubscriptions = await gateway.exportSubscriptionsList(requestBody);
-        assert.equal(responseExportSubscriptions.errorCode, "000");
+        equal(responseExportSubscriptions.errorCode, "000");
 
         return new Promise(resolve => {
             resolve();
@@ -258,7 +259,7 @@ describe("Subscription operations", () => {
 
     it('cancel subscription', async() => {
         let responseCancelSubscription = await gateway.cancelSubscription(responseSale.subscriptionID, 1022);
-        assert.equal(responseCancelSubscription.errorCode, "000");
+        equal(responseCancelSubscription.errorCode, "000");
 
         return new Promise(resolve => {
             resolve();
@@ -266,7 +267,7 @@ describe("Subscription operations", () => {
     });
 
 });
-
+*/
 describe("Blacklist operations", () => {
 
     const body = {
@@ -299,7 +300,7 @@ describe("Blacklist operations", () => {
         };
 
         let responseBlacklist = await gateway.blacklistValue(requestBody);
-        assert.equal(responseBlacklist.errorCode, "000");
+        equal(responseBlacklist.errorCode, "000");
 
         return new Promise(resolve => {
             resolve();
@@ -310,7 +311,7 @@ describe("Blacklist operations", () => {
 
     it('credit card: sale (for blacklist)', async () => {
         responseSale = await gateway.creditCardSale(body);
-        assert.equal(responseSale.errorCode, "000");
+        equal(responseSale.errorCode, "000");
 
         return new Promise(resolve => {
             resolve();
@@ -326,7 +327,7 @@ describe("Blacklist operations", () => {
         };
 
         let responseBlacklist = await gateway.blacklistUsers(responseSale.transactionID, requestBody);
-        assert.equal(responseBlacklist.errorCode, "000");
+        equal(responseBlacklist.errorCode, "000");
 
         return new Promise(resolve => {
             resolve();

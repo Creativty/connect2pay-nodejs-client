@@ -17,6 +17,7 @@ export default class PaymentClient {
             search_params.append(key, body[key]);
         }
         let _path = (body && method == "GET") ? path + '?' + search_params.toString() : path;
+
         let options : https.RequestOptions = {
             hostname: host,
             port: 443,
@@ -24,8 +25,10 @@ export default class PaymentClient {
             method: method,
             headers: {
                 'Authorization': 'Basic ' + Buffer.from(this.originatorID + ':' + this.originatorPW).toString('base64'),
+                'Content-Type': (method == "GET") ? "application/x-www-form-urlencoded" : "application/json"
             }
         };
+
         return new Promise((resolve, reject) => {
             let req = https.request(options, (res) => {
                 let chunks = [];
@@ -35,7 +38,17 @@ export default class PaymentClient {
                 res.on("end", () => {
                     let body = Buffer.concat(chunks);
                     let bodyString = body.toString("utf-8");
-                    resolve(JSON.parse(bodyString));
+                    try {
+                        let json = JSON.parse(bodyString);
+                        resolve(json);
+                    } catch (reason) {
+                        if (reason instanceof SyntaxError) {
+                            resolve(bodyString);
+                        } else {
+                            console.error(reason);
+                            reject();
+                        }
+                    }
                 });
             }).on("error", (err) => {
                 console.log("Payment SDK request error: " + err.message);

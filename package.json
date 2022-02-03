@@ -1,8 +1,8 @@
 {
-  "name": "payxpert_ts",
-  "version": "1.0.5",
-  "description": "PayXpert API wrapper in NodeJS (Typescript Edition)",
-  "main": "dist/index.ts",
+  "name": "payxpert-ts",
+  "version": "1.0.6",
+  "description": "Payzone API wrapper in NodeJS",
+  "main": "dist/index.js",
   "type": "module",
   "scripts": {
     "test": "mocha"
@@ -11,9 +11,7 @@
     "payxpert",
     "payment processing",
     "credit cards",
-    "api",
-    "wechat",
-    "alipay"
+    "api"
   ],
   "homepage": "https://github.com/Creativty/connect2pay-nodejs-client",
   "author": "PayXpert Technical Team <technical@payxpert.com> (https://developers.payxpert.com)",
@@ -25,10 +23,10 @@
     "url": "https://github.com/Creativty/connect2pay-nodejs-client"
   },
   "license": "Apache-2.0",
-  "devDependencies": {
-    "mocha": "^6.2.0"
-  },
   "dependencies": {
     "@types/node": "^17.0.14"
+  },
+  "devDependencies": {
+    "mocha": "^9.2.0"
   }
 }

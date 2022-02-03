@@ -1,9 +1,8 @@
-import Connect2PayClient from "./connect2pay";
-import GatewayClient from "./gateway";
+import Connect2PayClient from "./connect2pay.js";
+import GatewayClient from "./gateway.js";
 export default class PaymentSDK {
     paymentGateway: GatewayClient;
     _connect2Pay: Connect2PayClient;
-    $: any;
     originatorID: string;
     originatorPW: string;
     get gateway(): GatewayClient;

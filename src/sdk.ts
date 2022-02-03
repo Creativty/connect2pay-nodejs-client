@@ -3,7 +3,7 @@ import GatewayClient from "./gateway.js";
 
 export default class PaymentSDK {
     paymentGateway: GatewayClient;
-    _connect2Pay: Connect2PayClient;$
+    _connect2Pay: Connect2PayClient;
     originatorID: string;
     originatorPW: string;
 
@@ -19,7 +19,7 @@ export default class PaymentSDK {
         if (this._connect2Pay == null) {
             this._connect2Pay = new Connect2PayClient(this.originatorID, this.originatorPW);
         }
-        return this.connect2pay;
+        return this._connect2Pay;
     }
     
 
@@ -40,7 +40,7 @@ export default class PaymentSDK {
     setOriginatorPW(password:string) {
         if (password) {
             this.paymentGateway = null;
-            this.originatorPW = null;
+            this.originatorPW = password;
         }
     }
 }
